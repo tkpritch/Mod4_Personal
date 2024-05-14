@@ -1,0 +1,69 @@
+---
+title: "MB5370_Module4_day1"
+author: "Tory Pritchard"
+date: "2024-05-14"
+output: html_document
+---
+
+#____________________________________________________________________________
+Workspace/Rmd file location
+C:/Users/Admin/OneDrive/Documents/MB5370/Module_04/Mod4_Personal/Dataviz.Rmd
+
+Description:
+
+#____________________________________________________________________________
+
+Gettin Git n Gettin Goin
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages("credentials")
+#install.packages("gitcreds")
+#install.packages("usethis")
+credentials::git_credential_ask()
+
+#this is a name space saying that git_sitrep belongs to usethis package
+#you are telling R which function to use from the package with the :: 
+usethis::git_sitrep()
+
+#reset the credentials and copy and paste your PAT 'ghp' code you have on Git
+#gitcreds::gitcreds_set()
+
+#make sure the computer knows who is working the Git
+library(usethis)
+use_git_config(user.name = "tkpritch", user.email = "tory.pritchard@my.jcu.edu.au")
+
+#In your Git tab you have paths and you need to commit them after you check the
+#Staged box to make it change from ? to A
+#Now start to commit the files in your Git tab, then double check that your
+#commitment has saved. Do this regularly, just like saving!
+#usethis::use_github()
+
+#Do this for all your Git paths then click these buttons
+#IN THIS ORDER:
+#Save
+#Stage (checks the box)
+#Commit (puts it in the Git remote repository)
+#Pull (remote changes to your computer)
+#Push (your changes to your remote repository)
+```
+
+
+
+
+#____________________________________________________________________________
+## Part 1: Dataviz in R - JK don't use this, use the one provided!!!! i.e. workshop1
+
+Make sure all necessary packages are installed, then call them into library
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(DataViz)
+library(ggplot2)
+library(tidyr)
+library(tidyverse)
+library(palmerpenguins)
+library(ggthemes)
+devtools::install_github("kjhealy/socviz")
+
+```
+
+
