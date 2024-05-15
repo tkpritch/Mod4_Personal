@@ -1,0 +1,38 @@
+---
+title: "Plot_Deconstruction"
+author: "Tory Pritchard"
+date: "2024-05-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Part 1: Choose data
+[Number of described species](https://ourworldindata.org/how-many-species-are-there)
+
+Data for the plot can be found from the above link. Once downloaded, the data was wrangled for Part 3.
+
+## Part 2: Deconstruct the plot
+
+![Figure 1. Screenshot of the original plot](spporgplot.png)
+
+
+This plot can be improved first, by taking away the "all groups" categories and second, putting the data on a log scale both to reduce the skew of the plot. 
+
+When first on the Our World in Data page, the groups selected didn't seem to have any reason or rhyme, so another way that this plot could be improved is by digging deeper into the data and splitting the groups into phyla.
+
+
+## Part 3: Reconstruct a better version of the plot
+
+```{r cars}
+
+```
+Figure 2. Bar plot showing the number of described species on a log scale for various groups in 2022. Counts are listed for each group for reference. 
+
+
+```{r}
+
+```
+Figure 3. Faceted bar plot showing the number of described species on a log scale for various groups in 4 phyla in 2022. Counts are listed for each group for reference.

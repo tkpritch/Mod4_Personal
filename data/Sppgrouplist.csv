@@ -1,0 +1,31 @@
+Group,Count
+VERTEBRATES,
+Mammals,6631
+Birds,11197
+Reptiles,12060
+Amphibians,8707
+Fishes,36367
+Subtotal,74962
+INVERTEBRATES,
+Insects,1053578
+Molluscs,86254
+Crustaceans,84382
+Corals,5614
+Arachnids,92766
+Velvet Worms,210
+Others,157547
+Subtotal,1480351
+PLANTS,
+Mosses,21925
+Ferns and Allies,11800
+Gymnosperms,1113
+Flowering Plants,369000
+Green Algae,13644
+Red Algae,7553
+Subtotal,425035
+FUNGI & PROTISTS,
+Lichens,17000
+"Mushrooms, etc",151316
+Brown Algae,4630
+Subtotal,172946
+TOTAL,2153294
