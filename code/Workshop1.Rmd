@@ -1,8 +1,8 @@
 ---
 title: "MB5370 Module 04. Workshop 1 - Introduction"
-author: "Ben Cresswell"
+author: "Tory Pritchard"
 output: html_document
-date: "2024-03-22"
+date: "2024-05-15"
 ---
 
 ```{r setup, include=FALSE}
@@ -14,6 +14,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 ## install.packages("tidyverse") # Delete this line once installed
 library("tidyverse")
+
+#and other packages
+library(DataViz)
+library(ggplot2)
+library(tidyr)
+library(tidyverse)
+library(palmerpenguins)
+library(ggthemes)
+devtools::install_github("kjhealy/socviz")
 ```
 
 
@@ -34,7 +43,7 @@ summary(mpg)
 # Create first plot
 ```{r}
 ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = disp, y = hwy))
+  geom_point(mapping = aes(x = displ, y = hwy))
 ```
 
 The plot shows a negative relationship between engine size (displ) and fuel efficiency (hwy). In other words, cars with big engines use more fuel. What does this say about fuel efficiency and engine size?
@@ -51,7 +60,8 @@ ggplot(data = mpg)
 
 We need to map some aesthetics!!
 
-# When you’re creating a plot, you essentially need two attributes of a plot: a geom and aesthetics.
+# When you’re creating a plot, you essentially need two attributes of a plot: 
+# a geom and aesthetics.
 ```{r}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, colour = class))
@@ -79,12 +89,20 @@ ggplot(data = mpg) +
 ```
 Another warning!!
 Question: When would using alpha (or size be appropriate??)
+ans: Likely for continuous data.
 
 # Change point shape by class:
 ```{r}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, shape = class))
 ```
+When using shapes for each class there were warning messages:
+Warning: The shape palette can deal with a maximum of 6 discrete values because more than 6
+becomes difficult to discriminate
+ℹ you have requested 7 values. Consider specifying shapes manually if you need that
+  many have them.
+Warning: Removed 62 rows containing missing values or values outside the scale range
+(`geom_point()`).
 
 
 # Make all points blue
@@ -96,7 +114,8 @@ ggplot(data = mpg) +
 
 # Troubleshooting 
 
-
+The + has to go at the end of the line (not the start of the next line), which 
+is particularly important if you’re running your script line-by-line.
 
 
 
@@ -134,6 +153,9 @@ ggplot(data = mpg) +
 # Exercise:
 Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? 
 
+nrow & ncol is the number of rows and columns
+[Other option controls](https://ggplot2.tidyverse.org/reference/facet_wrap.html)
+
 ```{r}
 
 ```
@@ -143,7 +165,7 @@ Read ?facet_wrap. What does nrow do? What does ncol do? What other options contr
 We already used points:
 ```{r}
 ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displx, y = hwy))
+  geom_point(mapping = aes(x = displ, y = hwy))
 ```
 
 
@@ -155,7 +177,7 @@ ggplot(data = mpg) +
   geom_smooth(mapping = aes(x = displ, y = hwy))
 ```
 ### Question: whey don't we use geom_line() here? What would that look like? ###
-
+Using geom_line creates a jagged up and down line & makes it hard to read
 
 So let’s recap. A geom is an object that your plot uses to represent the data. To change the geom type in your plot, simply change the geom function that you add to your plot template. Sometimes you may want to try a few things out, in which case you could use comments to help you remember what worked and what didn’t. 
 
@@ -163,10 +185,15 @@ So let’s recap. A geom is an object that your plot uses to represent the data.
 ```{r}
 ggplot(data = mpg) + 
   #geom_point(mapping = aes(x = displ, y = hwy)) + # points horrible 
-  geom_smooth(mappings = aes(x = displ, y = hwy)) # try smooth line
+  geom_smooth(mapping = aes(x = displ, y = hwy)) # try smooth line
 ```
 
 Question: how does R work out where to plot the line??? Can use the chunk output to inform us. Can also use the help menu.
+ans: The chunk output states:
+`geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+'loess'is a character vector that can but input into method which is a function for smoothing out the data.
+formula = 'y ~ x' in the default, and you can also use NULL, and it is used when there are less than 1000 observations.
+
 
 # Changing linetype
 ```{r}
@@ -194,7 +221,7 @@ ggplot(data = mpg) +
 We already did this one way
 ```{r}
 ggplot(data = mpg) + 
-  geom_point(mapping = aes(xx = displ, y = hwy)) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
   geom_smooth(mapping = aes(x = displ, y = hwy))
 ```
 
@@ -222,18 +249,24 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_smooth(data = filter(mpg, class == "subcompact"), se = FALSE)
 ```
 Question: what does the "se = FALSE" do?
+ans: Doesn't display the confidence interval around the smooth line (i.e. the grey rectangle)
 
 
 # Exercise:
 1.  What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+ans: Line chart used for continuous
+  boxplots used for two variables where one discrete, one continuous
+  histogram used for one variable that is continuous
+  area chart used for continuous
 2.  Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.
+Need to find continuous data to run this! 
 
 ```{r}
 
 ```
 
 
-3.  Will these two graphs look different? Why/why not?
+3.  Will these two graphs look different? Why/why not? - will be the same they are just organized differently 
 ```{r}
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point() + 
@@ -258,8 +291,28 @@ glimpse(diamonds)
 ggplot(data = diamonds) + 
   geom_bar(mapping = aes(x = cut))
 ```
+This bar chart shows that more diamonds are available with high quality cuts than low quality cuts
+The y-axis wasn't specified in the chunk of code above but scatterplots, plot the raw values of your dataset. Other graphs, like bar charts, calculate new values to plot:
+bar charts, histograms, and frequency polygons “bin” your data and then plot bin counts (the number of points that fall in each bin).
+smoothers fit a model to your data and then plot predictions from the model.
+boxplots compute a robust summary of the distribution and then display a specially formatted box.
+
+stat is an algorithm used to calculate new values for a graph, short for statistical transformation
+
+You can generally use geoms and stats interchangeably. For example, you can recreate the previous plot using stat_count() instead of geom_bar().
+```{r}
+ggplot(data = diamonds) + 
+  stat_count(mapping = aes(x = cut))
+```
+every geom has a default stat and every stat has a default geom, which means you don’t need to worry about what’s going on!
+
+
 
 # Overriding defaults
+What is the default? How can it change? What’s it doing to my work?
+
+Ex. Change the default stat (which is a count summary) to identity (which is the raw value of a variable)
+
 Make some new data
 ```{r}
 demo <- tribble(
@@ -272,6 +325,7 @@ demo <- tribble(
 )
 demo
 ```
+tribble() is basically a dataframe
 
 
 ```{r}
@@ -279,18 +333,20 @@ ggplot(data = demo) +
   geom_bar(mapping = aes(x = cut, y = freq), stat = "identity")
 ```
 Question: Why did we specify now specify a y axis?
+Because now the axis needs be specifically be something, it cannot be what R makes it automatically. 
 
 # What if we want to know the proportion rather than the absolute frequency?
+You can override a default mapping from transformed variables to aesthetics.
 ```{r}
 ggplot(data = diamonds) + 
   geom_bar(mapping = aes(x = cut, y = stat(prop), group = 1))
 ```
-
-Question: does anyone get the warning that's in the workbook?
 Warning: `stat(prop)` was deprecated in ggplot2 3.4.0.
 If so, can use # geom_bar(mapping = aes(x = cut, y = stage(after_stat = prop), group = 1))
 
+
 # Plotting statistical details
+Show more about the transformations in the plot - good practice to be transparent about uncertainty or any other limitations of your data - using stat_summary().
 ```{r}
 ggplot(data = diamonds) + 
   stat_summary(
@@ -312,6 +368,7 @@ ggplot(data = diamonds) +
   geom_bar(mapping = aes(x = cut, fill = cut))
 ```
 Question: Does anyone notice anything different in the colour scheme of this plot?
+Likely due to the colour palette not having enough colours for the y variable displayed.
 (Hint: It's in the viridis colour palette (colour blind friendly), but why is it different from the colour palette we used earlier?)
 Check out the difference:
 ```{r}
@@ -329,7 +386,11 @@ Now try using these aesthetics to colour by another variable like clarity. Notic
 ggplot(data = diamonds) + 
   geom_bar(mapping = aes(x = cut, fill = clarity))
 ```
-
+Position adjustments can allow you to customize your plots in 3 ways:
+identity - for raw data
+fill - changes height
+dodge - forces ggplot to not put things on top of each other
+If you use position = "identity" you can place each object exactly where it falls in context of the graph. Vital for point charts (ex. scatterplot) but messy for bar plots because then too much information is shown (as it generally summarizes info)
 
 # To alter transparency (alpha)
 ```{r}
@@ -359,7 +420,7 @@ Places overlapping objects directly beside one another.
 ggplot(data = diamonds) + 
   geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge")
 ```
-
+ 
 # Jittering
 position = "jitter" adds a small amount of random noise to each point to avoid overplotting when points overlap. This is useful for scatterplots but not barplots.
 ```{r}
@@ -368,13 +429,17 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy))
 ```
 
+Template for making a ggplot2:
 
+ggplot(data = <DATA>) + 
+  <GEOM_FUNCTION>(
+     mapping = aes(<MAPPINGS>),
+     stat = <STAT>, 
+     position = <POSITION>
+  ) +
+  <FACET_FUNCTION>
 
+Read more about 'grammar of graphics'
+[Textbook pg 34](https://r4ds.hadley.nz/data-visualize)
 
-
-
-
-
-
-
-
+End of workshop 1 #_______________________________________________
