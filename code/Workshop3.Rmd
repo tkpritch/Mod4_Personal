@@ -1,0 +1,31 @@
+---
+title: "MB5370 Module 4 - Workshop3 - Data Wrangling in R"
+author: "Tory Pritchard"
+date: "2024-05-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Install and load tidyverse packages
+```{r}
+## install.packages("tidyverse") # Delete this line once installed
+library("tidyverse")
+
+#and other packages
+library(DataViz)
+library(ggplot2)
+library(tidyr)
+library(tidyverse)
+library(palmerpenguins)
+library(ggthemes)
+devtools::install_github("kjhealy/socviz")
+```
+
+# 
+```{r}
+
+```
+
