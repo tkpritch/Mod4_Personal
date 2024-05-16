@@ -30,11 +30,10 @@ library("tidyverse")
 
 #and other packages
 library(DataViz)
-library(ggplot2)
-library(tidyr)
-library(tidyverse)
 library(palmerpenguins)
 library(ggthemes)
+library(readr)
+library(tidyverse)
 ```
 
 
@@ -46,9 +45,8 @@ Data was exported as Comma Separated Values (CSV) and saved in Github repo [Mod4
 
 
 ### Part 2: Tidy data
-```{r, echo=FALSE}
-library(readr)
-shark <- read_csv("data/sharkcontrolprogramdata.csv")
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+shark <- read_csv("../data/sharkcontrolprogramdata.csv")
 ```
 
 
