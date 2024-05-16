@@ -471,3 +471,99 @@ NA is absent data, explicit absence
 Blank cell is absence OF data, implicit absence
 
 #### Explicit missing values 
+Creating or eliminating explicit values i.e. NA
+```{r}
+treatment <- tribble(
+  ~person,           ~treatment, ~response,
+  "Derrick Whitmore", 1,         7,
+  NA,                 2,         10,
+  NA,                 3,         NA,
+  "Katherine Burke",  1,         4
+)
+```
+
+You can fill in these missing values with `tidyr::fill()`. It works like `select()`, taking a set of columns:
+```{r}
+treatment |>
+  fill(everything())
+#> # A tibble: 4 × 3
+#>   person           treatment response
+#>   <chr>                <dbl>    <dbl>
+#> 1 Derrick Whitmore         1        7
+#> 2 Derrick Whitmore         2       10
+#> 3 Derrick Whitmore         3       10
+#> 4 Katherine Burke          1        4
+```
+This treatment is sometimes called “last observation carried forward”, or locf for short. You can use the .direction argument to fill in missing values that have been generated in more exotic ways.
+
+#### Fixed values
+Sometimes missing values represent some fixed and known value, most commonly 0. You can use dplyr::coalesce() to replace them:
+```{r}
+x <- c(1, 4, 5, 7, NA)
+coalesce(x, 0)
+#> [1] 1 4 5 7 0
+```
+
+Opposite problem where some other concrete value actually represents a missing value.
+This typically happens when data is generated from an older software that can’t properly represent missing values so it uses something like 99 or -999 in place of the missing value. You can fix this with dplyr::na_if():
+```{r}
+x <- c(1, 4, 5, 7, -99)
+na_if(x, -99)
+#> [1]  1  4  5  7 NA
+```
+Note: try to catch these kinds of errors when you actually read in the data (see the next section about importing data)
+
+#### NaN
+One special type of missing value worth mentioning is NaN or Not a Number. It typically behaves the same as NA but in some rare cases you may need to distinguish it using is.nan(x):
+```{r}
+x <- c(NA, NaN)
+x * 10
+#> [1]  NA NaN
+x == 1
+#> [1] NA NA
+is.na(x)
+#> [1] TRUE TRUE
+```
+NaN is most common when you performing a mathematical operation that has an indeterminate result.
+
+#### Implicit missing values
+ex. if an entire row of data is simply absent from the data.
+This dataset has two missing observations:
+The price in the fourth quarter of 2020 is explicitly missing, because its value is NA.
+The price for the first quarter of 2021 is implicitly missing, because it simply does not appear in the dataset.
+```{r}
+stocks <- tibble(
+  year  = c(2020, 2020, 2020, 2020, 2021, 2021, 2021),
+  qtr   = c(   1,    2,    3,    4,    2,    3,    4),
+  price = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
+)
+```
+
+Sometimes you want to make implicit missings explicit in order to have something physical to work with. In other cases, explicit missings are forced upon you by the structure of the data and you want to get rid of them. Remember how we did this when we used pivot_wider()?
+
+Another example to pivot `stocks` wider to put the quarter in the columns, both missing values become explicit
+```{r}
+stocks |>
+  pivot_wider(
+    names_from = qtr, 
+    values_from = price
+  )
+#> # A tibble: 2 × 5
+#>    year   `1`   `2`   `3`   `4`
+#>   <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1  2020  1.88  0.59  0.35 NA   
+#> 2  2021 NA     0.92  0.17  2.66
+```
+Advanced Note: See [here](https://r4ds.hadley.nz/missing-values#complete) for how to use `tidyr::complete()` to generate missing values in special cases.
+
+### How can I import data into R
+
+`read_csv()` comes from the readr package
+to import data you need to use forward slashes (‘/’) or a double backlash (‘\\’). 
+
+If you are working within your Rproj, you already have all the data and working directory set so R is able to find the data you put within something like ggplot(data) and run the plot.
+
+#### Practical advice
+Read in data
+Assess whether tidy
+Check whether data are valid

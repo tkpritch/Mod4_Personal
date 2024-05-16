@@ -1,9 +1,18 @@
 ---
-title: "MB5370 Module 04. Workshop 1 - Introduction"
+title: "MB5370 Module 04 Workshop 1 - Introduction"
 author: "Tory Pritchard"
 output: html_document
 date: "2024-05-15"
 ---
+
+#____________________________________________________________________________
+Workspace/Rmd file location
+C:/Users/Admin/OneDrive/Documents/MB5370/Module_04/Mod4_Personal/Workshop1.Rmd
+Also on Git hub!
+
+Description: This workshop teaches how to visualize scientific information using R.
+
+#____________________________________________________________________________
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -22,7 +31,7 @@ library(tidyr)
 library(tidyverse)
 library(palmerpenguins)
 library(ggthemes)
-devtools::install_github("kjhealy/socviz")
+#devtools::install_github("kjhealy/socviz")
 ```
 
 
