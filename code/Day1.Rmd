@@ -37,6 +37,9 @@ use_git_config(user.name = "tkpritch", user.email = "tory.pritchard@my.jcu.edu.a
 #Now start to commit the files in your Git tab, then double check that your
 #commitment has saved. Do this regularly, just like saving!
 #usethis::use_github()
+#Once you commit, in the box, there will be an info message that says
+# Your branch is ahead of 'origin/master' by 1 commit.
+#This means you haven't Pushed your file yet into Git - so pull then push!
 
 #Do this for all your Git paths then click these buttons
 #IN THIS ORDER:
