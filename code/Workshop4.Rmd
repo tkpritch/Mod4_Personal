@@ -1,0 +1,78 @@
+---
+title: "Workshop4"
+author: "Tory Pritchard"
+date: "2024-05-17"
+output: html_document
+---
+
+#____________________________________________________________________________
+
+Workspace/Rmd file location
+C:/Users/Admin/OneDrive/Documents/MB5370/Module_04/Mod4_Personal/Workshop4.Rmd
+File also in Git hub!
+
+Description: This workshop shows how to do GIS in R.
+
+#____________________________________________________________________________
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+Install and load required packages
+```{r}
+#install.packages("sf") 
+#install.packages("terra")
+#install.packages("tmap")
+
+
+#load into R library
+library(tidyverse)
+library(sf) # simple features
+library (terra) # for raster
+library(tmap) # Thematic maps are geographical maps in which spatial data distributions are visualized
+```
+
+
+### Load data
+```{r}
+#load the copepod data into R studio
+library(readr)
+dat <- read_csv("data-for-course/copepods_raw.csv")
+dat
+```
+
+A tibble
+```{r}
+# A tibble: 5,313 × 11
+   silk_id segment_no latitude longitude sample_time_utc  project route vessel  
+     <dbl>      <dbl>    <dbl>     <dbl> <chr>            <chr>   <chr> <chr>   
+ 1       1          1    -28.3      154. 26/06/2009 22:08 AusCPR  BRSY  ANL Win...
+ 2       1          5    -28.7      154. 26/06/2009 23:12 AusCPR  BRSY  ANL Win...
+ 3       1          9    -29.0      154. 27/06/2009 0:17  AusCPR  BRSY  ANL Win...
+ 4       1         13    -29.3      154. 27/06/2009 1:22  AusCPR  BRSY  ANL Win...
+ 5       1         17    -29.7      154. 27/06/2009 2:26  AusCPR  BRSY  ANL Win...
+ 6       1         18    -29.8      154. 27/06/2009 2:43  AusCPR  BRSY  ANL Win...
+ 7       1         26    -30.4      153. 27/06/2009 4:52  AusCPR  BRSY  ANL Win...
+ 8       1         30    -30.7      153. 27/06/2009 5:57  AusCPR  BRSY  ANL Win...
+ 9       1         33    -31.0      153. 27/06/2009 6:45  AusCPR  BRSY  ANL Win...
+10       1         37    -31.3      153. 27/06/2009 7:50  AusCPR  BRSY  ANL Win...
+# ... with 5,303 more rows, and 3 more variables: meanlong <dbl>, region <chr>,
+#   richness_raw <dbl>
+```
+
+`silk_id column`, which is just the ID for each of the silks, onto which plankton are recorded. 
+For processing, silks are divided into segments, so you will also see a `segment_no` column. The other columns are pretty self explanatory.
+
+### Check coordinates
+Make first map with `ggplot2` and plot the coordinates for the samples (segments of the CPR skiils)
+```{r}
+ggplot(dat) + 
+  aes(x = longitude, y = latitude, color = richness_raw) +
+  geom_point()
+```
+
