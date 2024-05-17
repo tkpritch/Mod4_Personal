@@ -25,10 +25,6 @@ knitr::opts_chunk$set(
 
 load required packages
 ```{r}
-## install.packages("tidyverse") # Delete this line once installed
-library("tidyverse")
-
-#and other packages
 library(DataViz)
 library(palmerpenguins)
 library(ggthemes)
@@ -41,15 +37,21 @@ library(tidyverse)
 
 [Shark Control Program](https://qfish.fisheries.qld.gov.au/query/number-caught-by-area-calendar-year-and-species-group/table)
 
-Data was exported as Comma Separated Values (CSV) and saved in Github repo [Mod4_Personal](https://github.com/tkpritch/Mod4_Personal.git)
+Data was first downloaded from the above link. However, after viewing the data in excel, I went back to the above link and customized how the data was sorted so there were less NA values and blank cells. It was exported as Comma Separated Values (CSV) and saved in Github repo [Mod4_Personal](https://github.com/tkpritch/Mod4_Personal.git)
 
 
 ### Part 2: Tidy data
+
+Import dataset
 ```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-shark <- read_csv("../data/sharkcontrolprogramdata.csv")
+shark <- read_csv("../data/sharkdatacustom.csv")
 ```
 
 
+Delete rows with NA
+```{r}
+shark <- na.omit(shark)
+```
 
 
 ### Part 3: Plot 
