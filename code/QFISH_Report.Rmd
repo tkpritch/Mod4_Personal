@@ -58,6 +58,17 @@ Change column name so there are no spaces
 shark <- shark %>% rename(`Count` = `NumberCaught Total`)
 ```
 
+Make sure data is assigned to the proper data type it is
+```{r}
+shark <- shark %>%
+  mutate(Area = as.character(Area),
+         SpeciesGroup = as.character(SpeciesGroup),
+         CalendarYear = as.numeric(CalendarYear),
+         Count = as.numeric(Count))
+         
+```
+
+
 
 Create a bar plot showing catch data of the 4 groups over all the years
 ```{r}
@@ -65,7 +76,7 @@ ggplot(data = shark) +
   geom_bar(aes(x = SpeciesGroup, y = Count), stat = "identity")
 ```
 
-Create a bar plot showing 
+Create a bar plot showing the areas where the species were caught
 ```{r}
 ggplot(data = shark) +
   geom_bar(aes(x = SpeciesGroup, y = Count, fill = Area), stat = "identity")
@@ -75,17 +86,30 @@ Create a bar plot showing only the shark catch over the years
 ```{r}
 shark_filtered <- shark %>%
   filter(SpeciesGroup == "Shark")
-
-shark_filtered <- shark_filtered %>%
-  mutate(CalendarYear = as.numeric(CalendarYear))
          
 ggplot(data = shark_filtered) +
-  geom_bar(mapping = aes(x = CalendarYear, y = Count), stat = "identity") +
-  labs(title = "Catch Data for Sharks",
-       x = "Area",
-       y = "Count") +
-  theme_minimal()
+  geom_bar(aes(x = CalendarYear, y = Count), stat = "identity") +
+  labs(x = "Year",
+       y = "Count")
 ```
+
+Create a point plot showing the catch over the years 
+```{r}
+ggplot(data = shark) +
+  geom_line(aes(x = CalendarYear, y = Count, colour = SpeciesGroup)) +
+  labs(x = "Year",
+       y = "Count")
+```
+
+Create a bar plot showing the areas where the species were caught
+```{r}
+ggplot(data = shark_filtered) +
+  geom_bar(aes(x = Area, y = Count, fill = CalendarYear), stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+
 
 ```{r}
 fishmeth <- read_csv("C:/Users/Admin/Downloads/export.csv")
@@ -96,15 +120,23 @@ filtered_fishmeth <- fishmeth %>%
   mutate_all(~ ifelse(. == "N/A", NA, .)) %>%
   mutate_all(~ ifelse(is.na(.), 0, .))
 
-filtered_fishmeth$Tonnes <- as.numeric(gsub("[,.]", "", filtered_fishmeth$Tonnes))
+filtered_fishmeth$Tonnes <- as.numeric(gsub("[,]", "", filtered_fishmeth$Tonnes))
 
 filtered_fishmeth <- filtered_fishmeth %>%
   mutate(Tonnes = as.numeric(Tonnes),
          CalendarYear = as.numeric(CalendarYear))
 
-ggplot(data = filtered_fishmeth) +
-  geom_line(aes(x = CalendarYear, y = Tonnes, colour = FishingMethod))
+#exclude the fishing methods that are 0s
+# List of fishing methods to exclude
+methods_to_exclude <- c("Trap", "Other", "Diving", "Danish Seine", "Collection")
 
+# Filter out the methods you want to exclude
+filtered_meth <- filtered_fishmeth %>%
+  filter(!FishingMethod %in% methods_to_exclude)
+
+ggplot(data = filtered_meth) +
+  geom_line(aes(x = CalendarYear, y = Tonnes, colour = FishingMethod)) +
+  theme_minimal()
 ```
 
 
