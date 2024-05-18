@@ -75,6 +75,9 @@ Create a bar plot showing only the shark catch over the years
 ```{r}
 shark_filtered <- shark %>%
   filter(SpeciesGroup == "Shark")
+
+shark_filtered <- shark_filtered %>%
+  mutate(CalendarYear = as.numeric(CalendarYear))
          
 ggplot(data = shark_filtered) +
   geom_bar(mapping = aes(x = CalendarYear, y = Count), stat = "identity") +
@@ -85,8 +88,23 @@ ggplot(data = shark_filtered) +
 ```
 
 ```{r}
-ggplot(data = shark) +
-  geom_line(aes(x = CalendarYear, y = Count), stat = "identity")
+fishmeth <- read_csv("C:/Users/Admin/Downloads/export.csv")
+
+filtered_fishmeth <- fishmeth %>%
+  filter(!grepl("Total", CalendarYear)) %>%
+  filter(CalendarYear != "2024 incomplete") %>%
+  mutate_all(~ ifelse(. == "N/A", NA, .)) %>%
+  mutate_all(~ ifelse(is.na(.), 0, .))
+
+filtered_fishmeth$Tonnes <- as.numeric(gsub("[,.]", "", filtered_fishmeth$Tonnes))
+
+filtered_fishmeth <- filtered_fishmeth %>%
+  mutate(Tonnes = as.numeric(Tonnes),
+         CalendarYear = as.numeric(CalendarYear))
+
+ggplot(data = filtered_fishmeth) +
+  geom_line(aes(x = CalendarYear, y = Tonnes, colour = FishingMethod))
+
 ```
 
 
