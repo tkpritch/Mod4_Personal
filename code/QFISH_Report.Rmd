@@ -48,10 +48,53 @@ shark <- read_csv("../data/sharkdatacustom.csv")
 ```
 
 
-Delete rows with NA
+Delete rows with NA as they are just the rows that have the total numbers in them
 ```{r}
 shark <- na.omit(shark)
 ```
+
+Change column name so there are no spaces
+```{r}
+shark <- shark %>% rename(`Count` = `NumberCaught Total`)
+```
+
+
+Create a bar plot showing catch data of the 4 groups over all the years
+```{r}
+ggplot(data = shark) +
+  geom_bar(aes(x = SpeciesGroup, y = Count), stat = "identity")
+```
+
+Create a bar plot showing 
+```{r}
+ggplot(data = shark) +
+  geom_bar(aes(x = SpeciesGroup, y = Count, fill = Area), stat = "identity")
+```
+
+Create a bar plot showing only the shark catch over the years 
+```{r}
+shark_filtered <- shark %>%
+  filter(SpeciesGroup == "Shark")
+         
+ggplot(data = shark_filtered) +
+  geom_bar(mapping = aes(x = CalendarYear, y = Count), stat = "identity") +
+  labs(title = "Catch Data for Sharks",
+       x = "Area",
+       y = "Count") +
+  theme_minimal()
+```
+
+```{r}
+ggplot(data = shark) +
+  geom_line(aes(x = CalendarYear, y = Count), stat = "identity")
+```
+
+
+
+
+
+
+
 
 
 ### Part 3: Plot 
