@@ -35,9 +35,12 @@ library(tidyverse)
 
 ### Part 1: Obtain data
 
-[Shark Control Program](https://qfish.fisheries.qld.gov.au/query/number-caught-by-area-calendar-year-and-species-group/table)
+Data was obtained from the Department of Agriculture and Fisheries website under QFish. The chosen data set was:
+[Commercial Line Fishery](https://qfish.fisheries.qld.gov.au/query/commercial-line-fishery/table)
 
-Data was first downloaded from the above link. However, after viewing the data in excel, I went back to the above link and customized how the data was sorted so there were less NA values and blank cells. It was exported as Comma Separated Values (CSV) and saved in Github repo [Mod4_Personal](https://github.com/tkpritch/Mod4_Personal.git)
+Before downloading the data, in the `Customize` tab, the `FishingMethod` was moved to `Row Area` to remove the data from the `Filter Area`. 
+
+Data was exported as Comma Separated Values (CSV) and saved in Github repo [Mod4_Personal](https://github.com/tkpritch/Mod4_Personal.git)
 
 
 ### Part 2: Tidy data
@@ -48,81 +51,30 @@ shark <- read_csv("../data/sharkdatacustom.csv")
 ```
 
 
-Delete rows with NA as they are just the rows that have the total numbers in them
+
+Import dataset
 ```{r}
-shark <- na.omit(shark)
+fishmethod <- read_csv("C:/Users/Admin/Downloads/export.csv")
 ```
 
-Change column name so there are no spaces
 ```{r}
-shark <- shark %>% rename(`Count` = `NumberCaught Total`)
-```
-
-Make sure data is assigned to the proper data type it is
-```{r}
-shark <- shark %>%
-  mutate(Area = as.character(Area),
-         SpeciesGroup = as.character(SpeciesGroup),
-         CalendarYear = as.numeric(CalendarYear),
-         Count = as.numeric(Count))
-         
-```
-
-
-
-Create a bar plot showing catch data of the 4 groups over all the years
-```{r}
-ggplot(data = shark) +
-  geom_bar(aes(x = SpeciesGroup, y = Count), stat = "identity")
-```
-
-Create a bar plot showing the areas where the species were caught
-```{r}
-ggplot(data = shark) +
-  geom_bar(aes(x = SpeciesGroup, y = Count, fill = Area), stat = "identity")
-```
-
-Create a bar plot showing only the shark catch over the years 
-```{r}
-shark_filtered <- shark %>%
-  filter(SpeciesGroup == "Shark")
-         
-ggplot(data = shark_filtered) +
-  geom_bar(aes(x = CalendarYear, y = Count), stat = "identity") +
-  labs(x = "Year",
-       y = "Count")
-```
-
-Create a point plot showing the catch over the years 
-```{r}
-ggplot(data = shark) +
-  geom_line(aes(x = CalendarYear, y = Count, colour = SpeciesGroup)) +
-  labs(x = "Year",
-       y = "Count")
-```
-
-Create a bar plot showing the areas where the species were caught
-```{r}
-ggplot(data = shark_filtered) +
-  geom_bar(aes(x = Area, y = Count, fill = CalendarYear), stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-```
-
-
-
-
-```{r}
-fishmeth <- read_csv("C:/Users/Admin/Downloads/export.csv")
-
-filtered_fishmeth <- fishmeth %>%
+filtered_fishmethod <- fishmethod %>%
   filter(!grepl("Total", CalendarYear)) %>%
   filter(CalendarYear != "2024 incomplete") %>%
   mutate_all(~ ifelse(. == "N/A", NA, .)) %>%
   mutate_all(~ ifelse(is.na(.), 0, .))
+```
 
-filtered_fishmeth$Tonnes <- as.numeric(gsub("[,]", "", filtered_fishmeth$Tonnes))
 
-filtered_fishmeth <- filtered_fishmeth %>%
+
+
+```{r}
+filtered_fishmethod$Tonnes <- as.numeric(gsub("[,]", "", filtered_fishmethod$Tonnes))
+```
+
+Since the columns of data had character and numeric values in the cells, mutate the data to assign the proper variable type to the rows.
+```{r}
+filtered_fishmethod <- filtered_fishmethod %>%
   mutate(Tonnes = as.numeric(Tonnes),
          CalendarYear = as.numeric(CalendarYear))
 
@@ -131,19 +83,14 @@ filtered_fishmeth <- filtered_fishmeth %>%
 methods_to_exclude <- c("Trap", "Other", "Diving", "Danish Seine", "Collection")
 
 # Filter out the methods you want to exclude
-filtered_meth <- filtered_fishmeth %>%
+filtered_method <- filtered_fishmethod %>%
   filter(!FishingMethod %in% methods_to_exclude)
 
 ggplot(data = filtered_meth) +
   geom_line(aes(x = CalendarYear, y = Tonnes, colour = FishingMethod)) +
-  theme_minimal()
+  labs(x= "Year") +
+  scale_y_continuous(breaks = seq(0, 15000, by = 2500))
 ```
-
-
-
-
-
-
 
 
 
