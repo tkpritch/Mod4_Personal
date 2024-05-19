@@ -23,8 +23,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-load required packages
 ```{r}
+#Load required packages
 library(DataViz)
 library(palmerpenguins)
 library(ggthemes)
@@ -40,23 +40,17 @@ Data was obtained from the Department of Agriculture and Fisheries website under
 
 Before downloading the data, in the `Customize` tab, the `FishingMethod` was moved to `Row Area` to remove the data from the `Filter Area`. 
 
-Data was exported as Comma Separated Values (CSV) and saved in Github repo [Mod4_Personal](https://github.com/tkpritch/Mod4_Personal.git)
+Data was exported as Comma Separated Values (CSV) and available in Github repo:  [Mod4_Personal](https://github.com/tkpritch/Mod4_Personal.git)
 
 
 ### Part 2: Tidy data
 
-Import dataset
-```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-shark <- read_csv("../data/sharkdatacustom.csv")
-```
-
-
-
-Import dataset
+Import dataset from Github.
 ```{r}
-fishmethod <- read_csv("C:/Users/Admin/Downloads/export.csv")
+fishmethod <- read_csv("../data/CommLineFish.csv")
 ```
-
+Remove/filter out the rows of Area that include more than just the year.
+Change "N/A" values to NA then change NA to 0.
 ```{r}
 filtered_fishmethod <- fishmethod %>%
   filter(!grepl("Total", CalendarYear)) %>%
@@ -65,9 +59,7 @@ filtered_fishmethod <- fishmethod %>%
   mutate_all(~ ifelse(is.na(.), 0, .))
 ```
 
-
-
-
+Remove the commas in the Tonnes column so it can be identified as a numeric type.
 ```{r}
 filtered_fishmethod$Tonnes <- as.numeric(gsub("[,]", "", filtered_fishmethod$Tonnes))
 ```
@@ -77,16 +69,27 @@ Since the columns of data had character and numeric values in the cells, mutate 
 filtered_fishmethod <- filtered_fishmethod %>%
   mutate(Tonnes = as.numeric(Tonnes),
          CalendarYear = as.numeric(CalendarYear))
+```
 
-#exclude the fishing methods that are 0s
-# List of fishing methods to exclude
+Exclude the fishing methods that are all or almost all 0's.
+```{r}
+#List methods to be excluded
 methods_to_exclude <- c("Trap", "Other", "Diving", "Danish Seine", "Collection")
 
-# Filter out the methods you want to exclude
+#Filter out methods
 filtered_method <- filtered_fishmethod %>%
   filter(!FishingMethod %in% methods_to_exclude)
+```
+Now data should be ready to plot!
 
-ggplot(data = filtered_meth) +
+
+### Part 3: Plot 
+
+Data included tonnes caught in the commercial line fishery, but other methods were included for comparison of how much is caught amongst different methods from the years 1990 to 2023.
+
+Plot data showing tonnes caught over the years by each method.
+```{r}
+ggplot(data = filtered_method) +
   geom_line(aes(x = CalendarYear, y = Tonnes, colour = FishingMethod)) +
   labs(x= "Year") +
   scale_y_continuous(breaks = seq(0, 15000, by = 2500))
@@ -94,8 +97,6 @@ ggplot(data = filtered_meth) +
 
 
 
-### Part 3: Plot 
+![Commercial Line Fishery](QFISHplot.png)
 
-![Shark Control Program](QFISHplot.png)
-
-*detailed caption of what plot shows
+Figure 3. Commercial line fishery catch data for various species from 1990 to 2023. Fishing methods plotted are listed. Data obtained from Department of Agriculture and Fisheries, QFish.
