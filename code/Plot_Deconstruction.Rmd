@@ -1,5 +1,5 @@
 ---
-title: "Plot_Deconstruction"
+title: "MB5370 Module 4 - Plot_Deconstruction"
 author: "Tory Pritchard"
 date: "2024-05-15"
 output: html_document
@@ -8,10 +8,10 @@ output: html_document
 #____________________________________________________________________________
 
 Workspace/Rmd file location
-C:/Users/Admin/OneDrive/Documents/MB5370/Module_04/Mod4_Personal/QFISH_report.Rmd
-File also in Git hub!
+C:/Users/Admin/OneDrive/Documents/MB5370/Module_04/Mod4_Personal/Plot_Deconstruction.Rmd
+File also in Git hub repo!
 
-Description: This assignment uses real-world marine data collected as part of Queensland fisheries QFISH database to develop a report.
+Description: This assignment uses real-world marine data collected as part of Queensland fisheries QFISH database to develop a report and produce a plot visualizing the data.
 
 #____________________________________________________________________________
 
@@ -39,7 +39,8 @@ library(tidyverse)
 
 Data was obtained from Our World in Data website: [Number of described species](https://ourworldindata.org/how-many-species-are-there)
 
-Data for the plot is available from the above link, first clicking the link below the figure that says `Learn more about this data` and then clinking the link in the bullet point: The source for each taxonomic group can be found in the 'IUCN Red List summary statistics, Table 1a.`. The PDF that automatically downloads was the data that was wrangled for Part 3. 
+Data for the plot is available from the above link, first clicking the link below the figure that says `Learn more about this data` and then clinking the link in the bullet point: The source for each taxonomic group can be found in the [IUCN Red List summary statistics, Table 1a.](https://nc.iucnredlist.org/redlist/content/attachment_files/2023-1_RL_Table_1a.pdf)`. The PDF that automatically downloads was the data that was organized in Excel before being wrangled in Part 3.
+
 
 
 ## Part 2: Deconstruct the plot
@@ -50,35 +51,25 @@ knitr::include_graphics("../data/spporgplot.PNG")
 ```
 
 
+
+
 This plot can be improved first, by taking away the "all groups" categories and second, putting the data on a log scale both to reduce the skew of the plot. 
 
 When first on the Our World in Data page, the groups selected didn't seem to have any reason or rhyme, so another way that this plot could be improved is by digging deeper into the data and splitting the groups into more specific or higher classified groups for compartmentalization.
 
 
+
 ## Part 3: Reconstruct a better version of the plot
 
-First way plot can be improved:
 Import dataset from Github that has all the groups and their counts
 ```{r}
-groupcount <- read_csv("../data/speciesall.csv")
-str(groupcount)
+sppgrouplist <- read_csv("../data/sppgrouplist.csv")
 ```
 
-Remove the data for "all groups"
-```{r}
-#List methods to be excluded
-exclude <- c("All groups")
-
-#Filter out methods
-groupcount <- groupcount %>%
-  filter(!group %in% exclude)
-
-rm(groupcount_noall)
-```
-
+First way plot can be improved:
 Create a plot that shows the overall count of groups on a log scale.
 ```{r}
-#| fig.cap = "Figure 2. Total number of described species as of 2022 in each taxonomic group transformed on a log scale. Data obtained from Our World in Data website."
+#| fig.cap = "Figure 2. Total number of described species as of 2022 in each taxonomic group transformed on a log scale, ordered by richness. Data obtained from Our World in Data website."
 ggplot(sppgrouplist, aes(x = count, y = reorder(main, count))) +
   geom_bar(stat = "identity", show.legend = FALSE, fill = "royalblue4") +
   geom_text(aes(label = count), hjust = 1.1, color = "white") + #Adjust text position
@@ -90,12 +81,9 @@ ggplot(sppgrouplist, aes(x = count, y = reorder(main, count))) +
   theme_minimal()
 ```
 
-Second way plot can be improved:
-Import dataset from Github that has the groups sorted into a smaller number of groups
-```{r}
-sppgrouplist <- read_csv("../data/sppgrouplist.csv")
-```
 
+
+Second way plot can be improved:
 Create a plot that has the groups put into groups as a facet bar plot.
 ```{r}
 #| fig.cap = "Figure 3. Total number of described species as of 2022 grouped within four main taxonomic groups: Fungi/Protists, Invertebrates, Plants and Vertebrates. Data obtained from Our World in Data website."
