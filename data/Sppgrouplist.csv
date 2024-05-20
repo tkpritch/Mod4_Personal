@@ -1,31 +1,22 @@
-Group,Count
-VERTEBRATES,
-Mammals,6631
-Birds,11197
-Reptiles,12060
-Amphibians,8707
-Fishes,36367
-Subtotal,74962
-INVERTEBRATES,
-Insects,1053578
-Molluscs,86254
-Crustaceans,84382
-Corals,5614
-Arachnids,92766
-Velvet Worms,210
-Others,157547
-Subtotal,1480351
-PLANTS,
-Mosses,21925
-Ferns and Allies,11800
-Gymnosperms,1113
-Flowering Plants,369000
-Green Algae,13644
-Red Algae,7553
-Subtotal,425035
-FUNGI & PROTISTS,
-Lichens,17000
-"Mushrooms, etc",151316
-Brown Algae,4630
-Subtotal,172946
-TOTAL,2153294
+main,count,group
+Mammals,6631,VERTEBRATES
+Birds,11197,VERTEBRATES
+Reptiles,12060,VERTEBRATES
+Amphibians,8707,VERTEBRATES
+Fishes,36367,VERTEBRATES
+Insects,1053578,INVERTEBRATES
+Molluscs,86254,INVERTEBRATES
+Crustaceans,84382,INVERTEBRATES
+Corals,5614,INVERTEBRATES
+Arachnids,92766,INVERTEBRATES
+Velvet Worms,210,INVERTEBRATES
+Others,157547,INVERTEBRATES
+Mosses,21925,PLANTS
+Ferns and Allies,11800,PLANTS
+Gymnosperms,1113,PLANTS
+Flowering Plants,369000,PLANTS
+Green Algae,13644,PLANTS
+Red Algae,7553,PLANTS
+Lichens,17000,FUNGI/PROTISTS
+"Mushrooms, etc",151316,FUNGI/PROTISTS
+Brown Algae,4630,FUNGI/PROTISTS
