@@ -1,5 +1,5 @@
 ---
-title: "MB5370 Module 4 - QFISH_report"
+title: "MB5370 Module 4 - QFish Report"
 author: "Tory Pritchard"
 date: "2024-05-16"
 output: html_document
@@ -9,9 +9,9 @@ output: html_document
 
 Workspace/Rmd file location
 C:/Users/Admin/OneDrive/Documents/MB5370/Module_04/Mod4_Personal/QFISH_report.Rmd
-File also in Git hub!
+File also in Git hub repo!
 
-Description: This assignment uses real-world marine data collected as part of Queensland fisheries QFISH database to develop a report.
+Description: This assignment uses real-world marine data collected as part of Queensland fisheries QFISH database to develop a report and produce a plot visualizing the data.
 
 #____________________________________________________________________________
 
@@ -34,6 +34,7 @@ library(tidyverse)
 ```
 
 
+
 ### Part 1: Obtain data
 
 Data was obtained from the Department of Agriculture and Fisheries website under QFish. The chosen data set was:
@@ -44,13 +45,15 @@ Before downloading the data, in the `Customize` tab, the `FishingMethod` was mov
 Data was exported as Comma Separated Values (CSV) and available in Github repo:  [Mod4_Personal](https://github.com/tkpritch/Mod4_Personal.git)
 
 
+
 ### Part 2: Tidy data
 
 Import dataset from Github.
 ```{r}
 fishmethod <- read_csv("../data/CommLineFish.csv")
 ```
-Remove/filter out the rows of Area that include more than just the year, and change "N/A" values to NA.
+Remove/filter out the rows of Area that include more than just the numerical year value
+Change "N/A" values to NA.
 ```{r}
 filtered_fishmethod <- fishmethod %>%
   filter(!grepl("Total", CalendarYear)) %>%
@@ -63,14 +66,14 @@ Remove the commas in the Tonnes column so it can be identified as a numeric type
 filtered_fishmethod$Tonnes <- as.numeric(gsub("[,]", "", filtered_fishmethod$Tonnes))
 ```
 
-Since the columns of data had character and numeric values in the cells, mutate the data to assign the proper variable type to the rows.
+Assign the proper variable type to the rows (i.e. numeric).
 ```{r}
 filtered_fishmethod <- filtered_fishmethod %>%
   mutate(Tonnes = as.numeric(Tonnes),
          CalendarYear = as.numeric(CalendarYear))
 ```
 
-Exclude the fishing methods that are all or almost all 0's.
+Exclude the fishing methods that are all or almost all NA.
 ```{r}
 #List methods to be excluded
 methods_to_exclude <- c("Trap", "Other", "Diving", "Danish Seine", "Collection")
@@ -82,13 +85,15 @@ filtered_method <- filtered_fishmethod %>%
 Now data should be ready to plot!
 
 
+
+
 ### Part 3: Plot 
 
-Data included tonnes caught in the commercial line fishery, but other methods were included for comparison of how much is caught amongst different methods from the years 1990 to 2023.
+Data included catch tonnage in the commercial line fishery, but other methods were included for comparison of how much was caught among different methods from the years 1990 to 2023.
 
 Plot data showing tonnes caught over the years by each method.
 ```{r}
-#| fig.cap = "Figure 3. Commercial line fishery catch data for various species from 1990 to 2023. Fishing methods plotted are listed. Where there are points that do not connect, there was no data for those years for that method recorded. Fishing methods that were excluded from the plot due to having no tonnage collected include: Trap, Other, Diving, Danish Seine, Collection. Data obtained from Department of Agriculture and Fisheries, QFish."
+#| fig.cap = "Figure 3. Commercial line fishery catch data for various species from 1990 to 2023. Fishing methods plotted are listed. Points that do not connect indicate there was no data recorded for those years. Fishing methods that were excluded from the plot due to having no data recorded include: Trap, Other, Diving, Danish Seine, Collection. Data obtained from Department of Agriculture and Fisheries, QFish."
 ggplot(filtered_method, aes(x = CalendarYear, y = Tonnes, colour = FishingMethod)) +
   geom_line() +
   geom_point() +
