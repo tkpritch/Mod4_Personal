@@ -60,7 +60,8 @@ When first on the Our World in Data page, the groups selected didn't seem to hav
 First way plot can be improved:
 Import dataset from Github that has all the groups and their counts
 ```{r}
-groupcount <- read_csv("../data/sppcount.csv")
+groupcount <- read_csv("../data/speciesall.csv")
+str(groupcount)
 ```
 
 Remove the data for "all groups"
@@ -69,16 +70,18 @@ Remove the data for "all groups"
 exclude <- c("All groups")
 
 #Filter out methods
-groupcount_noall <- groupcount %>%
+groupcount <- groupcount %>%
   filter(!group %in% exclude)
+
+rm(groupcount_noall)
 ```
 
 Create a plot that shows the overall count of groups on a log scale.
 ```{r}
 #| fig.cap = "Figure 2. Total number of described species as of 2022 in each taxonomic group transformed on a log scale. Data obtained from Our World in Data website."
-ggplot(groupcount_noall, aes(x = sppcount, y = reorder(group, sppcount))) +
+ggplot(sppgrouplist, aes(x = count, y = reorder(main, count))) +
   geom_bar(stat = "identity", show.legend = FALSE, fill = "royalblue4") +
-  geom_text(aes(label = sppcount), hjust = 1.1, color = "white") + #Adjust text position
+  geom_text(aes(label = count), hjust = 1.1, color = "white") + #Adjust text position
   scale_x_continuous(trans = "log10", breaks = c(1, 10, 100, 1000, 10000, 100000, 1000000)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5),
         plot.title.position = "plot", #Center title
