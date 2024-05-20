@@ -28,6 +28,7 @@ knitr::opts_chunk$set(
 library(DataViz)
 library(palmerpenguins)
 library(ggthemes)
+library(wesanderson)
 library(readr)
 library(tidyverse)
 ```
@@ -87,12 +88,10 @@ Data included tonnes caught in the commercial line fishery, but other methods we
 
 Plot data showing tonnes caught over the years by each method.
 ```{r}
-#| fig.cap = "Figure 3. Commercial line fishery catch data for various species from 1990 to 2023. Fishing methods plotted are listed. Data obtained from Department of Agriculture and Fisheries, QFish."
-ggplot(filtered_method, aes(x = CalendarYear, y = Tonnes, colour = FishingMethod),
-       labs(x="Year")) +
-  geom_point()
-  geom_smooth() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-  #scale_y_discrete(breaks = seq(0, 15000, by = 2500))
-
+#| fig.cap = "Figure 3. Commercial line fishery catch data for various species from 1990 to 2023. Fishing methods plotted are listed. Where there are points that do not connect, there was no data for those years for that method recorded. Fishing methods that were excluded from the plot due to having no tonnage collected include: Trap, Other, Diving, Danish Seine, Collection. Data obtained from Department of Agriculture and Fisheries, QFish."
+ggplot(filtered_method, aes(x = CalendarYear, y = Tonnes, colour = FishingMethod)) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = palette.colors(palette = "Dark 2")) +
+  labs(x= "Year", colour = "Method of Capture")
 ```
