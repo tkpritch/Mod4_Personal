@@ -1,5 +1,5 @@
 ---
-title: "MB5370 Module 4 - Plot_Deconstruction"
+title: "MB5370 Module 4 - Plot Deconstruction"
 author: "Tory Pritchard"
 date: "2024-05-15"
 output: html_document
@@ -11,7 +11,7 @@ Workspace/Rmd file location
 C:/Users/Admin/OneDrive/Documents/MB5370/Module_04/Mod4_Personal/Plot_Deconstruction.Rmd
 File also in Git hub repo!
 
-Description: This assignment uses real-world marine data collected as part of Queensland fisheries QFISH database to develop a report and produce a plot visualizing the data.
+Description: This assignment was done in pairs and focuses on graphical storytelling in R and trying to fix up a plot to better convey the message the data is getting across. 
 
 #____________________________________________________________________________
 
