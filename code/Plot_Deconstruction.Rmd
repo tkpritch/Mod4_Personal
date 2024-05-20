@@ -10,13 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Part 1: Choose data
-[Number of described species](https://ourworldindata.org/how-many-species-are-there)
 
-Data for the plot can be found from the above link. Once downloaded, the data was wrangled for Part 3.
+Data was obtained from Our World in Data website: [Number of described species](https://ourworldindata.org/how-many-species-are-there)
+
+Data for the plot is available from the above link, first clicking the link below the figure that says `Learn more about this data` and then clinking the link in the bullet point `The source for each taxonomic group can be found in the IUCN Red List summary statistics, Table 1a.`. The PDF that automatically downloads was the data that was wrangled for Part 3. 
 
 ## Part 2: Deconstruct the plot
 
-![Figure 1. Screenshot of the original plot](spporgplot.png)
+![Figure 1. Screenshot of the original plot](spporgplot.PNG)
 
 
 This plot can be improved first, by taking away the "all groups" categories and second, putting the data on a log scale both to reduce the skew of the plot. 
